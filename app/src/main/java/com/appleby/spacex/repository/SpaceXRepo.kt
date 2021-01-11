@@ -1,4 +1,4 @@
-package com.appleby.spacex
+package com.appleby.spacex.repository
 
 import com.appleby.spacex.networkmodel.Launch
 import io.reactivex.Observable
@@ -8,7 +8,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
-object SpaceXApi {
+object SpaceXRepo {
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://api.spacexdata.com/v4/")
@@ -17,7 +17,8 @@ object SpaceXApi {
         .build()
 
     val service by lazy {
-        retrofit.create(SpaceXApiService::class.java)
+        retrofit.create(
+            SpaceXApiService::class.java)
     }
 
     interface SpaceXApiService {
