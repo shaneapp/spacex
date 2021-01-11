@@ -10,7 +10,6 @@ import com.appleby.spacex.networkmodel.Launch
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_launch.view.*
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class LaunchListAdapter(private val context: Context) : RecyclerView.Adapter<LaunchListAdapter.ViewHolder>() {
@@ -33,11 +32,11 @@ class LaunchListAdapter(private val context: Context) : RecyclerView.Adapter<Lau
             .load(launchItem.links.patch.small)
             .into(holder.ivBadge)
 
-        holder.tvName.text = launchItem.name
+        holder.tvName.text = if (launchItem.name.isNullOrEmpty()) "No mission data" else launchItem.name
 
         val sdf = SimpleDateFormat("dd/MM/yyyy @ HH:mm")
         val date = Date(launchItem.date_unix * 1000L)
-        holder.tvDate.text = sdf.format(date)
+        holder.tvDate.text = if (launchItem.date_unix == 0) "No mission time" else sdf.format(date)
         holder.ivSuccess.setImageResource( if (launchItem.success) R.drawable.check else R.drawable.cancel )
     }
 

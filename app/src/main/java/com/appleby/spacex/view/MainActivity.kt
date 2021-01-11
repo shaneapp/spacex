@@ -26,8 +26,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.result.observe(this, Observer {
             when (it) {
                 is LaunchResult.Success -> updateRecyclerView(it.launches)
-                is LaunchResult.Failure -> Toast.makeText(this, "Api Failure", Toast.LENGTH_SHORT).show()
+                is LaunchResult.Failure -> networkFailure()
             }
+            viewswitcher.displayedChild = 1
         })
 
         rvLaunches.layoutManager = LinearLayoutManager(this)
@@ -37,7 +38,12 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        viewswitcher.displayedChild = 0
         viewModel.requestPastLaunches()
+    }
+
+    private fun networkFailure() {
+        Toast.makeText(this, "Api Failure", Toast.LENGTH_SHORT).show()
     }
 
     private fun updateRecyclerView(launchList: List<Launch>) {
