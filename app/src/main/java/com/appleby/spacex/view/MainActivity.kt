@@ -6,14 +6,18 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.appleby.spacex.R
 import com.appleby.spacex.networkmodel.Launch
 import com.appleby.spacex.viewmodel.LaunchListViewModel
 import com.appleby.spacex.model.LaunchResult
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: LaunchListViewModel by viewModels()
+
+    private val launchListAdapter = LaunchListAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +29,9 @@ class MainActivity : AppCompatActivity() {
                 is LaunchResult.Failure -> Toast.makeText(this, "Api Failure", Toast.LENGTH_SHORT).show()
             }
         })
+
+        rvLaunches.layoutManager = LinearLayoutManager(this)
+        rvLaunches.adapter = launchListAdapter
     }
 
     override fun onResume() {
@@ -34,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateRecyclerView(launchList: List<Launch>) {
-        Log.i("SHANE", launchList.toString())
+        launchListAdapter.updateData(launchList)
     }
 
 }
